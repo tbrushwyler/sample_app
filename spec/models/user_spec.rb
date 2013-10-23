@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe User do
   
-  before { @user = User.new(name: "Example User", email: "user@example.com", password: "foobar", password_confirmation: "foobar") }
+  before { @user = FactoryGirl.create(:user) }
 
   subject { @user }
 
@@ -27,6 +27,8 @@ describe User do
   it { should respond_to(:reverse_relationships) }
   it { should respond_to(:followers) }
 
+  it { should respond_to(:username) }
+
   it { should be_valid }
   it { should_not be_admin }
 
@@ -45,6 +47,11 @@ describe User do
   	it { should_not be_valid }
   end
 
+  describe "when username is not present" do
+    before { @user.username = " " }
+    it { should_not be_valid }
+  end
+
   describe "when password doesn't match confirmation" do
   	before { @user.password_confirmation = "mismatch" }
   	it { should_not be_valid }
@@ -53,6 +60,11 @@ describe User do
   describe "with a password that's too short" do
   	before { @user.password = @user.password_confirmation = "a" * 5 }
   	it { should_not be_valid }
+  end
+
+  describe "with a username that's too long" do
+    before { @user.username = "a" * 21 }
+    it { should_not be_valid }
   end
 
   describe "return value of authenticate method" do
@@ -96,14 +108,50 @@ describe User do
   	end
   end
 
+  describe "when username format is invalid" do
+    it "should be invalid" do
+      usernames = ["94name", "__name", "my__name", "my name", "my.name"]
+      usernames.each do |invalid_username|
+        @user.username = invalid_username
+        expect(@user).not_to be_valid
+      end
+    end
+  end
+
+  describe "when username format is valid" do
+    it "should be valid" do
+      usernames = ["_myname67", "myname34", "my_name", "_my_67_name"]
+      usernames.each do |valid_username|
+        @user.username = valid_username
+        expect(@user).to be_valid
+      end
+    end
+  end
+
   describe "when email address is already taken" do
+    let(:me) { User.create(username: "username", email: "trb1992@gmail.com", name: "Taylor Brushwyler", password: "foobar", password_confirmation: "foobar") }
+    let(:imposter) { User.create(username: "imposter", email: "trb1992@gmail.com", name: "I'm an imposter", password: "password", password_confirmation: "password") }
+
   	before do
-  	  user_with_same_email = @user.dup
-  	  user_with_same_email.email.upcase!
-  	  user_with_same_email.save
+  	  imposter.email.upcase!
+  	  imposter.save
   	end
 
+    subject { me }
   	it { should_not be_valid }
+  end
+
+  describe "when username is already taken" do
+    let(:me) { User.create(username: "tbrushwyler", email: "trb1992@gmail.com", name: "Taylor Brushwyler", password: "foobar", password_confirmation: "foobar") }
+    let(:imposter) { User.create(username: "tbrushwyler", email: "imposter@tor.com", name: "I'm an imposter", password: "password", password_confirmation: "password") }
+
+    before do
+      imposter.username.upcase!
+      imposter.save
+    end
+
+    subject { me }
+    it { should_not be_valid }
   end
 
   describe "remember_token" do
