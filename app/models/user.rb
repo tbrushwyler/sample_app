@@ -47,6 +47,10 @@ class User < ActiveRecord::Base
     relationships.find_by(followed_id: other_user.id).destroy!
   end
 
+  def valid_username_regex
+    VALID_USERNAME_REGEX
+  end
+
   private
   	def create_remember_token
   	  self.remember_token = User.encrypt(User.new_remember_token)

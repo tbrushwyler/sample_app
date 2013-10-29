@@ -11,11 +11,11 @@ describe "Micropost pages" do
 
   	describe "with invalid information" do
   	  it "should not create a micropost" do
-  	  	expect { click_button "Post" }.not_to change(Micropost, :count)
+  	  	expect { click_button "✓" }.not_to change(Micropost, :count)
   	  end
 
   	  describe "error messages" do
-  	  	before { click_button "Post" }
+  	  	before { click_button "✓" }
   	  	it { should have_content('error') }
   	  end
   	end
@@ -23,9 +23,17 @@ describe "Micropost pages" do
   	describe "with valid information" do
   	  before { fill_in 'micropost_content', with: "Lorem ipsum" }
   	  it "should create a micropost" do
-  	  	expect { click_button "Post" }.to change(Micropost, :count).by(1)
+  	  	expect { click_button "✓" }.to change(Micropost, :count).by(1)
   	  end
   	end
+
+    describe "directed at a user" do
+      let(:other_user) { FactoryGirl.create(:user) }
+      before { fill_in 'micropost_content', with: "@#{other_user.username} Lorem ipsum" }
+      it "should create a micropost" do
+        expect { click_button "✓" }.to change(Micropost, :count).by(1)
+      end
+    end
   end
 
   describe "micropost destruction" do

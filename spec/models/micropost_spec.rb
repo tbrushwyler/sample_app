@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Micropost do
   let(:user) { FactoryGirl.create(:user) }
+  let(:other_user) { FactoryGirl.create(:user) }
   before { @micropost = user.microposts.build(content: "Lorem ipsum") }
 
   subject { @micropost }
@@ -32,9 +33,34 @@ describe Micropost do
   end
 
   describe "with reply" do
-    let(:other_user) { FactoryGirl.create(:user) }
-    let(:reply) { other_user.microposts.build(content: "Good idea", in_reply_to_post: @micropost.id, in_reply_to_user: user.id) }
+    describe "to user" do
+      let(:reply) { other_user.microposts.build(content: "Good idea", in_reply_to_user: user.id) }
+
+      it { should be_valid }
+
+      describe "and specific post" do
+        before { reply.in_reply_to_post = @micropost.id }
+
+        it { should be_valid }
+      end
+    end
+  end
+
+  describe "parser" do
+    let(:reply) { other_user.microposts.build(content: "@#{user.username} hello, there") }
 
     it { should be_valid }
+
+    describe "save" do
+      before do
+        reply.save
+        reply.reload
+      end
+
+      subject { reply }
+
+      its(:content) { should eq "hello, there" }
+      its(:in_reply_to_user) { should eq user.id }
+    end
   end
 end
