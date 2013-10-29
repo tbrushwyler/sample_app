@@ -3,6 +3,12 @@
 /* variables */
 
 $lightGray: #999;
+$flatBlueDark: #2C3E50;
+$flatBlueLight: #3498D8;
+$flatGreen: #2ECC71;
+$flatRed: #E74C3C;
+$flatPurple: #9B59B6;
+$flatYellow: #F1C40F;
 
 @mixin box_sizing {
 	-moz-box-sizing: border-box;
@@ -238,6 +244,66 @@ aside {
 	.gravatar {
 		margin: 1px 1px;
 	}
+}
+
+/* submission form */
+
+textarea#micropost_content {
+	background-color: $flatBlueDark;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #ddd!important
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #ddd!important
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #ddd!important
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #ddd!important
+}
+
+textarea#micropost_content,
+input.answer,
+input.submit {
+	border-radius: 5px!important;
+	color: white!important;
+	padding: 10px!important;
+	width: 100%!important;
+	font-size: 18px!important;
+	font-weight: 100!important;
+	line-height: 22px!important;
+	letter-spacing: 1px!important;
+	border: none!important;
+	margin-bottom: 5px!important;
+}
+
+input[type="button"].answer {
+	font-weight: 400!important;
+}
+
+input.answer:nth-of-type(1) {
+	background-color: $flatBlueLight;
+}
+
+input.answer:nth-of-type(2) {
+	background-color: $flatRed;
+}
+
+input.answer:nth-of-type(3) {
+	background-color: $flatPurple;
+}
+
+input.answer:nth-of-type(4) {
+	background-color: $flatYellow;
+}
+
+input.submit {
+	background-color: $flatGreen!important;
+	width: 50%!important;
+	float: right;
 }
 
 /* miscellaneous */

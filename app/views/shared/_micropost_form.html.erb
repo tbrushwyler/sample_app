@@ -3,5 +3,8 @@
 	<div class="field">
 		<%= f.text_area :content, placeholder: "Compose new micropost..." %>
 	</div>
-	<%= f.submit "Post", class: "btn btn-large-btn-primary" %>
+	<input type="text" class="answer" placeholder="First answer..." />
+	<input type="text" class="answer" placeholder="Second answer..." />
+	<input type="button" class="answer" value="+" />
+	<%= f.submit "✓", class: "submit" %>
 <% end %>
