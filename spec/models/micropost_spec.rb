@@ -13,7 +13,6 @@ describe Micropost do
   its(:user) { should eq user }
 
   it { should respond_to(:in_reply_to_user) }
-  it { should respond_to(:in_reply_to_post) }
 
   it { should be_valid }
 
@@ -34,15 +33,9 @@ describe Micropost do
 
   describe "with reply" do
     describe "to user" do
-      let(:reply) { other_user.microposts.build(content: "Good idea", in_reply_to_user: user.id) }
+      let(:reply) { other_user.microposts.build(content: "Good idea", in_reply_to_user: user) }
 
       it { should be_valid }
-
-      describe "and specific post" do
-        before { reply.in_reply_to_post = @micropost.id }
-
-        it { should be_valid }
-      end
     end
   end
 
@@ -60,7 +53,7 @@ describe Micropost do
       subject { reply }
 
       its(:content) { should eq "hello, there" }
-      its(:in_reply_to_user) { should eq user.id }
+      its(:in_reply_to_user) { should eq user }
     end
   end
 end

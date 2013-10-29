@@ -1,5 +1,7 @@
 class Micropost < ActiveRecord::Base
   belongs_to :user
+  belongs_to :in_reply_to_user, class_name: "User"
+
   default_scope -> { order('created_at DESC') }
   validates :user_id, presence: true
   validates :content, presence:true, length: { maximum: 140 }
@@ -13,7 +15,7 @@ class Micropost < ActiveRecord::Base
   	if match_data && match_data[1] && match_data[4]
 	  to_user = User.find_by_username(match_data[1])
 	  if to_user
-	  	new_post.in_reply_to_user = to_user.id
+	  	new_post.in_reply_to_user = to_user
 	  	new_post.content = match_data[4]
 	  end
   	end

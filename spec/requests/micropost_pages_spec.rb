@@ -30,6 +30,7 @@ describe "Micropost pages" do
     describe "directed at a user" do
       let(:other_user) { FactoryGirl.create(:user) }
       before { fill_in 'micropost_content', with: "@#{other_user.username} Lorem ipsum" }
+      
       it "should create a micropost" do
         expect { click_button "✓" }.to change(Micropost, :count).by(1)
       end
