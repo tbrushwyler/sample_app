@@ -192,19 +192,27 @@ describe User do
     end
 
     describe "status" do
-      let(:unfollowed_post) do
-        FactoryGirl.create(:micropost, user: FactoryGirl.create(:user))
-      end
+      let(:unfollowed_user) { FactoryGirl.create(:user) }
+      let(:unfollowed_post) { unfollowed_user.microposts.create!(content: "I don't follow you") }
+      let(:unfollowed_reply) { unfollowed_user.microposts.create!(content: "@#{@user.username} hey, big fan") }
+
       let(:followed_user) { FactoryGirl.create(:user) }
+      let(:followed_reply_to_another_user) { followed_user.microposts.create!(content: "@#{unfollowed_user.username} well don't you look good today.") }
 
       before do
         @user.follow!(followed_user)
         3.times { followed_user.microposts.create!(content: "Lorem ipsum") }
       end
 
+      let(:reply) { followed_user.microposts.create!(content: "@#{@user.username} hello!") }
+
       its(:feed) { should include(newer_micropost) }
       its(:feed) { should include(older_micropost) }
+      its(:feed) { should include(reply) }
+
       its(:feed) { should_not include(unfollowed_post) }
+      its(:feed) { should include(unfollowed_reply) }
+      its(:feed) { should_not include(followed_reply_to_another_user) }
       its(:feed) do
         followed_user.microposts.each do |micropost|
           should include(micropost)

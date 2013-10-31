@@ -47,8 +47,11 @@ describe "User pages" do
 
   describe "profile page" do
   	let(:user) { FactoryGirl.create(:user) }
+    let(:other_user) { FactoryGirl.create(:user) }
+
     let!(:m1) { FactoryGirl.create(:micropost, user: user, content: "Foo") }
     let!(:m2) { FactoryGirl.create(:micropost, user: user, content: "Bar") }
+    let!(:m3) { user.microposts.create!(content: "@#{other_user.username} hello!") }
 
   	before { visit user_path(user) }
 
@@ -58,11 +61,32 @@ describe "User pages" do
     describe "microposts" do
       it { should have_content(m1.content) }
       it { should have_content(m2.content) }
+      it { should_not have_content(m3.content) }
       it { should have_content(user.microposts.count) }
     end
 
+    describe "signed in as user" do
+      before { sign_in user }
+      before { visit user_path(user) }
+
+      it { should have_content(m3.content) }
+    end
+
+    describe "signed in as user to whom the reply was sent" do
+      before { sign_in other_user }
+      before { visit user_path(user) }
+
+      it { should have_content(m3.content) }
+    end
+
+    describe "signed in as a third party user" do
+      let(:onlooking_user) { FactoryGirl.create(:user) }
+      before { sign_in onlooking_user }
+
+      it { should_not have_content(m3.content) }
+    end
+
     describe "follow/unfollow buttons" do
-      let(:other_user) { FactoryGirl.create(:user) }
       before { sign_in user }
 
       describe "following a user" do

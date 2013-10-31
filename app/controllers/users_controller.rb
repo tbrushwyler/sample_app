@@ -13,7 +13,15 @@ class UsersController < ApplicationController
 
   def show
   	@user = User.find(params[:id])
-    @microposts = @user.microposts.paginate(page: params[:page])
+
+    @feed_items = @user.microposts.where("in_reply_to_user_id IS NULL").paginate(page: params[:page])
+    if (current_user)
+      if (current_user?(@user))
+        @feed_items = @user.microposts.paginate(page: params[:page])
+      else
+        @feed_items = @user.microposts.where("in_reply_to_user_id IS NULL OR in_reply_to_user_id = #{current_user.id}").paginate(page: params[:page])
+      end
+    end
   end
 
   def create
