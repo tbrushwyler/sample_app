@@ -12,7 +12,8 @@ describe Micropost do
   it { should respond_to(:user) }
   its(:user) { should eq user }
 
-  it { should respond_to(:in_reply_to_user) }
+  it { should respond_to(:mentions) }
+  it { should respond_to(:mentioned_users) }
 
   it { should be_valid }
 

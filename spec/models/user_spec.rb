@@ -29,6 +29,9 @@ describe User do
 
   it { should respond_to(:username) }
 
+  it { should respond_to(:mentions) }
+  it { should respond_to(:posts_mentioned_in) }
+
   it { should be_valid }
   it { should_not be_admin }
 
@@ -110,7 +113,7 @@ describe User do
 
   describe "when username format is invalid" do
     it "should be invalid" do
-      usernames = ["94name", "__name", "my__name", "my name", "my.name"]
+      usernames = ["my name", "my.name"]
       usernames.each do |invalid_username|
         @user.username = invalid_username
         expect(@user).not_to be_valid
@@ -211,7 +214,7 @@ describe User do
       its(:feed) { should include(reply) }
 
       its(:feed) { should_not include(unfollowed_post) }
-      its(:feed) { should include(unfollowed_reply) }
+      its(:feed) { should_not include(unfollowed_reply) }
       its(:feed) { should_not include(followed_reply_to_another_user) }
       its(:feed) do
         followed_user.microposts.each do |micropost|

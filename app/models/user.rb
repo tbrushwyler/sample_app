@@ -5,7 +5,9 @@ class User < ActiveRecord::Base
 
   has_many :reverse_relationships, foreign_key: "followed_id", class_name: "Relationship", dependent: :destroy
   has_many :followers, through: :reverse_relationships, source: :follower
-  has_one :micropost, foreign_key: "in_reply_to_user_id"
+
+  has_many :mentions, dependent: :destroy
+  has_many :posts_mentioned_in, through: :mentions, source: :post
 
   before_save do
     self.email = email.downcase
@@ -15,7 +17,7 @@ class User < ActiveRecord::Base
 
   validates :name, presence: true, length: { maximum: 50 }
   
-  VALID_USERNAME_REGEX = /\A^([a-zA-Z](_?[a-zA-Z0-9]+)*_?|_([a-zA-Z0-9]+_?)*)$\z/i
+  VALID_USERNAME_REGEX = /\A^([a-zA-Z0-9_]+)$\z/i
   validates :username, presence: true, length: { maximum: 20 }, format: { with: VALID_USERNAME_REGEX }, uniqueness: { case_sensitive: false }
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
