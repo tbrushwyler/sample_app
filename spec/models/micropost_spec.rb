@@ -14,6 +14,7 @@ describe Micropost do
 
   it { should respond_to(:mentions) }
   it { should respond_to(:mentioned_users) }
+  it { should respond_to(:quiet) }
 
   it { should be_valid }
 
@@ -34,7 +35,7 @@ describe Micropost do
 
   describe "with reply" do
     describe "to user" do
-      let(:reply) { other_user.microposts.build(content: "Good idea", in_reply_to_user: user) }
+      let(:reply) { other_user.microposts.build(content: "@#{user.username} Good idea") }
 
       it { should be_valid }
     end
@@ -54,7 +55,8 @@ describe Micropost do
       subject { reply }
 
       its(:content) { should eq "hello, there" }
-      its(:in_reply_to_user) { should eq user }
+      its(:mentioned_users) { should include(user) }
+      its(:quiet) { should eq true }
     end
   end
 end
