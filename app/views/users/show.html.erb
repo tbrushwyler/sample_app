@@ -10,7 +10,7 @@
 	</aside>
 	<div class="span8">
 		<%= render 'follow_form' if signed_in? %>
-		<h3>Microposts (<%= @user.microposts.count %>)</h3>
+		<h3>Microposts (<%= @feed_items.total_entries %>)</h3>
 		<%= render 'shared/feed' %>
 	</div>
 </div>

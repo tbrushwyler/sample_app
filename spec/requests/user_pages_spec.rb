@@ -62,7 +62,7 @@ describe "User pages" do
       it { should have_content(m1.content) }
       it { should have_content(m2.content) }
       it { should_not have_content(m3.content) }
-      it { should have_content(user.microposts.count) }
+      it { should have_content(user.microposts.loud.count) }
     end
 
     describe "signed in as user" do
@@ -70,6 +70,7 @@ describe "User pages" do
       before { visit user_path(user) }
 
       it { should have_content(m3.content) }
+      it { should have_content(user.microposts.visible_to_user(user).count) }
     end
 
     describe "signed in as user to whom the reply was sent" do
@@ -77,6 +78,7 @@ describe "User pages" do
       before { visit user_path(user) }
 
       it { should have_content(m3.content) }
+      it { should have_content(user.microposts.visible_to_user(other_user).count) }
     end
 
     describe "signed in as a third party user" do
