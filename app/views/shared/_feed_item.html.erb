@@ -1,14 +1,27 @@
-<li id="<%= feed_item.id %>">
-	<%= link_to gravatar_for(feed_item.user), feed_item.user %>
-	<span class="user"><%= link_to "@#{feed_item.user.username}", feed_item.user %><span class="name"><%= " (#{feed_item.user.name}) " %></span></span>
-	<% feed_item.mentioned_users.any? do %>
-		<% feed_item.mentioned_users.each do |u| %>
-			<span class="user"><%= link_to "@#{u.username}", u %></span>
+<li id="<%= feed_item.id %>" class="micropost">
+	<div class="question-info">
+		<span class="user"><%= link_to gravatar_for(feed_item.user), feed_item.user %><%= link_to "@#{feed_item.user.username}", feed_item.user %><span class="name"><%= " (#{feed_item.user.name}) " %></span></span>
+		<span class="delete">
+			<% if current_user?(feed_item.user) %>
+				<%= link_to "delete", feed_item, method: :delete, data: { confirm: "You sure?" }, title: feed_item.content %>
+			<% end %>
+		</span>
+		<span class="timestamp">Posted <%= time_ago_in_words(feed_item.created_at) %> ago.</span>
+		<% feed_item.mentioned_users.any? do %>
+			<span> &rarr; </span>
+			<% feed_item.mentioned_users.each do |u| %>
+				<span class="user"><%= link_to "@#{u.username}", u %><span class="name"><%= " (#{u.name}) " %></span></span>
+			<% end %>
 		<% end %>
-	<% end %>
-	<span class="content"><%= feed_item.content %></span>
-	<span class="timestamp">Posted <%= time_ago_in_words(feed_item.created_at) %> ago.</span>
-	<% if current_user?(feed_item.user) %>
-		<%= link_to "delete", feed_item, method: :delete, data: { confirm: "You sure?" }, title: feed_item.content %>
-	<% end %>
+	</div>
+	<div class="question">
+		<span class="content"><%= feed_item.content %></span>
+		<ol class="answers">
+			<% if feed_item.answers.any? %>
+				<% feed_item.answers.each do |answer| %>
+					<li class="answer"><input type="radio" id="<%= answer.id %>" name="<%= feed_item.id%>" class="icheck-me" data-skin="square" /><label for="<%= answer.id %>"><%= answer.text %></label></li>
+				<% end %>
+			<% end %>
+		</ol>
+	</div>
 </li>

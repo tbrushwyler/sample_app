@@ -46,6 +46,7 @@ textarea {
 
 h1, h2, h3, h4, h5, h6 {
 	line-height: 1;
+	font-family: abril-flatface, serif;
 }
 
 h1 {
@@ -67,6 +68,7 @@ h2 {
 p {
 	font-size: 1.1em;
 	line-height: 1.7em;
+	font-family: lato, sans-serif;
 }
 
 /* header */
@@ -144,11 +146,6 @@ aside {
 	}
 }
 
-.gravatar {
-	float: left;
-	margin-right: 10px;
-}
-
 /* forms */
 
 input, textarea, select, .uneditable-input {
@@ -182,12 +179,83 @@ input {
 	list-style: none;
 	margin: 10px 0 0 0;
 
-	li {
-		padding: 10px 0;
-		border-top: 1px solid #e8e8e8;
+	li.micropost {
+		margin-bottom: 10px;
+		font-family: lato, sans-serif;
 
-		.user .name {
-			color: $grayLight;
+		.user {
+			padding: 10px;
+			.name {
+				color: $grayLight;
+				display: none;
+			}
+			&:hover .name {
+				display: inline;
+			}
+
+			a {
+				font-size: 1.2em;
+			}
+		}
+
+		.question {
+			border: 5px solid #dcdcdc;
+			padding: 20px;
+		}
+
+		.timestamp, .delete {
+			display: none;
+			float: right;
+			margin-left: 10px;
+		}
+
+		&:hover {
+			.timestamp, .delete {
+				display: inline;
+			}
+		}
+
+		.content {
+			font-size: 1.4em;
+			line-height: 2em;
+		}
+
+		.answers {
+			list-style: none;
+			margin-left: 60px;
+
+			.answer {
+				line-height: 1.5em;
+
+				input {
+					display: inline;
+					margin-top: 0;
+					margin-right: 6px;
+				}
+
+				label {
+					display: inline;
+					font-size: 1.2em;
+					vertical-align: middle;
+					line-height: 2em;
+				}
+
+				&:nth-of-type(1) {
+					color: $flatBlueLight;
+				}
+
+				&:nth-of-type(2) {
+					color: $flatRed;
+				}
+
+				&:nth-of-type(3) {
+					color: $flatPurple;
+				}
+
+				&:nth-of-type(4) {
+					color: $flatYellow;
+				}
+			}
 		}
 	}
 }
@@ -201,8 +269,7 @@ input {
 }
 
 .gravatar {
-	float: left;
-	margin-right: 10px;
+	border-radius: 50%;
 }
 
 aside {

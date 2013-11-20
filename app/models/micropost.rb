@@ -3,13 +3,18 @@ require 'will_paginate/array'
 class Micropost < ActiveRecord::Base
   belongs_to :user
 
+  has_many :answers, dependent: :destroy
+  accepts_nested_attributes_for :answers, reject_if: lambda { |a| a[:text].blank? }
+  validate :validate_answers
+
   has_many :mentions, foreign_key: :post_id, dependent: :destroy
   has_many :mentioned_users, through: :mentions, source: :user
 
   default_scope -> { order('microposts.created_at DESC') }
   validates :user_id, presence: true
-  validates :content, presence:true, length: { maximum: 140 }
+  validates :content, presence: true, length: { maximum: 140 }
 
+  after_initialize :initialize_answers
   after_save :extract_mentions
 
   scope :quiet, -> { where(quiet: true) }
@@ -50,5 +55,14 @@ class Micropost < ActiveRecord::Base
 
         self.update_attributes(content: content.strip, quiet: q)
       end
+    end
+
+    def validate_answers
+      errors.add(:answers, "too few") if answers.size < 2
+      errors.add(:answers, "too many") if answers.size > 4
+    end
+
+    def initialize_answers
+      # 2.times { answers.build }
     end
 end

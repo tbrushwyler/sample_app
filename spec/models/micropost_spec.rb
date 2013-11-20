@@ -16,6 +16,8 @@ describe Micropost do
   it { should respond_to(:mentioned_users) }
   it { should respond_to(:quiet) }
 
+  it { should respond_to(:answers) }
+
   it { should be_valid }
 
   describe "when user_id is not present" do

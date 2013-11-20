@@ -14,4 +14,16 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require turbolinks
+//= require chart
 //= require_tree .
+
+// startup function
+$(function() {
+	$$(".micropost.show").swipeLeft(function() {
+		next();
+	});
+	$$(".micropost.show").swipeRight(function() {
+		previous();
+	});
+	setUpChart();
+});

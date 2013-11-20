@@ -1,0 +1,22 @@
+<% provide(:title, "#{@micropost.user.username}'s question") %>
+<%= link_to "", @previous_path, id: "previous" %>
+<div class="container">
+	<div class="micropost show">
+		<h2 class="question-text"><%= @micropost.content %></h2>
+		<div class="pie-chart">
+			<!--<%= image_tag "pie.png", alt: "Pie Chart", id: "pie-chart" %>-->
+			<canvas id="pie-chart" width="300" height="300"></canvas>
+			<ul class="answers">
+				<% if @micropost.answers.any? %>
+					<% @micropost.answers.each do |answer| %>
+						<li class="answer"><input type="radio" id="<%= answer.id %>" name="<%= @micropost.id %>" /><label for="<%= answer.id %>"></label><p><%= answer.text %></p></li>
+					<% end %>
+				<% end %>
+			</ul>
+		</div>
+		<div class="line-graph">
+			<canvas id="line-graph" width="960" height="400"></canvas>
+		</div>
+	</div>
+</div>
+<%= link_to "", @next_path, id: "next" %>

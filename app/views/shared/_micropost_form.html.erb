@@ -3,8 +3,11 @@
 	<div class="field">
 		<%= f.text_area :content, placeholder: "Compose new micropost..." %>
 	</div>
-	<input type="text" class="answer" placeholder="First answer..." />
-	<input type="text" class="answer" placeholder="Second answer..." />
-	<input type="button" class="answer" value="+" />
+	<div class="answers">
+		<%= f.fields_for :answers do |builder| %>
+			<%= render 'shared/answer_fields', f: builder %>
+		<% end %>
+		<%= button_to_add_fields("+", f, :answers) %>
+	</div>
 	<%= f.submit "✓", class: "submit" %>
 <% end %>

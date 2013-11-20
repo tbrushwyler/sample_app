@@ -1,14 +1,11 @@
-$(function() {
-	$(document).on('click', "input[type='button'].answer", function(e) {
-		var index = $(this).index("input.answer");
-		
-		if (index <= 2) {
-			$(this).after("<input type='button' class='answer' value='+' />");
-		}
-		
-		$(this).replaceWith("<input type='text' class='answer' />");
-		$("input.answer").get(index).focus();
+function add_fields(button, association, content) {
+	var new_id = new Date().getTime();
+	var regex = new RegExp("new_" + association, "g");
+	
+	$(button).before(content.replace(regex, new_id));
+	var num_answers = $(button).parent().children(".answer").length;
+	$(button).parent().children(".answer").get(num_answers - 2).focus();
 
-		e.preventDefault();
-	});
-});
+	if (num_answers == 5) // only allow 5 answers
+		$(button).remove();
+}

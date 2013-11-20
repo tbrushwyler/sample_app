@@ -1,0 +1,100 @@
+.micropost.show {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	text-align: center;
+
+	h2.question-text {
+		font-size: 50px;
+		font-weight: 100;
+		margin-bottom: 40px;
+	}
+
+	.pie-chart {
+		font-size: 0px;
+		width: 780px;
+		margin-left: auto;
+		margin-right: auto;
+		text-align: left;
+
+		#pie-chart {
+			display: inline-block;
+		}
+
+		.answers {
+			text-align: left;
+			font-size: 20px;
+			display: inline-block;
+			vertical-align: text-bottom;
+			width: 480px;
+			box-sizing: border-box;
+			padding-left: 60px;
+			list-style: none;
+			margin: 0;
+
+			.answer {
+				line-height: 40px;
+				vertical-align: top;
+
+				input {
+					display: none;
+				}
+				input + label {
+					width: 40px;
+					height: 40px;
+					display: inline-block;
+					background-repeat: no-repeat;
+					margin-right: 5px;
+					background-image: image-url("checkboxes.png");
+				}
+
+				&:nth-of-type(1) input:checked + label {
+					background-position: -59px 0px;
+				}
+
+				&:nth-of-type(2) input + label {
+					background-position: 0px -61px;
+				}
+				&:nth-of-type(2) input:checked + label {
+					background-position: -59px -61px;
+				}
+
+				&:nth-of-type(3) input + label {
+					background-position: 0px -122px;
+				}
+				&:nth-of-type(3) input:checked + label {
+					background-position: -59px -122px;
+				}
+
+				&:nth-of-type(4) input + label {
+					background-position: 0px -183px;
+				}
+				&:nth-of-type(4) input:checked + label {
+					background-position: -59px -183px;
+				}
+
+				p {
+					width: 370px;
+					display: inline-block;
+					font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+					vertical-align: top;
+				}
+			}
+		}
+	}
+}
+
+a#previous {
+	position: absolute;
+	left: 0;
+	right: 50%;
+	top: 0;
+	bottom: 0;
+	margin-right: 480px;
+}
+a#next {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	left: 50%;
+	margin-left: 480px;
+}

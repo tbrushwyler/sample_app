@@ -7,6 +7,8 @@ SampleApp::Application.routes.draw do
   match 'signup', to: 'users#new', via: 'get'
   match 'signin', to: 'sessions#new', via: 'get'
   match 'signout', to: 'sessions#destroy', via: 'delete'
+  
+  match 'question/:id/in/:source', to: 'microposts#advanced_show', via: 'get', as: :show
 
   resources :users do
     member do
@@ -14,7 +16,7 @@ SampleApp::Application.routes.draw do
     end
   end
   resources :sessions, only: [:new, :create, :destroy]
-  resources :microposts, only: [:create, :destroy]
+  resources :microposts, only: [:create, :show, :destroy]
   resources :relationships, only: [:create, :destroy]
 
   # The priority is based upon order of creation: first created -> highest priority.

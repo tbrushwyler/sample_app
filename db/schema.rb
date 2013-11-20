@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131104020717) do
+ActiveRecord::Schema.define(version: 20131112231316) do
+
+  create_table "answers", force: true do |t|
+    t.integer  "micropost_id"
+    t.string   "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "answers", ["micropost_id"], name: "index_answers_on_micropost_id"
 
   create_table "mentions", force: true do |t|
     t.integer  "user_id"
